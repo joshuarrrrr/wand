@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import evdev
+import sys
 
 import wand
 
@@ -29,23 +30,27 @@ def find_touch_device():
 if __name__ == "__main__":
     touch_dev = find_touch_device()
     if not touch_dev:
-        raise RuntimeError("No suitable multi-touch device found!")
-    print(touch_dev.name)
+        print("No suitable multi-touch device found!")
+        sys.exit(0)
+
+    print(f"Using touch device {touch_dev.name}")
 
     mt_device = wand.MultitouchDevice(path=touch_dev.path)
     mt_device.start()
 
     try:
-        while True:
+        while mt_device.running:
             new, updated, finished = mt_device.poll_events()
 
             for touch in new:
                 print(f"new touch point {touch.id}")
 
             for touch in updated:
-                print(f"updated: {touch.id} ({touch.x, touch.y})")
+                print(f"updated {touch.id} {touch.pos}")
 
             for touch in finished:
                 print(f"touch point {touch.id} was finished")
     except KeyboardInterrupt:
-        print("Exiting...")
+        mt_device.stop()
+
+    sys.exit(1)
