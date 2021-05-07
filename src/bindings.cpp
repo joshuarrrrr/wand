@@ -16,24 +16,6 @@ using namespace wand;
 PYBIND11_MODULE(wand, m) {
   m.doc() = "";
 
-  py::class_<MultitouchDevice, std::shared_ptr<MultitouchDevice>>{m, "MultitouchDevice"}
-      .def(py::init<std::string>(), py::arg("path"))
-      .def("__repr__",
-           [](const MultitouchDevice& device) { return "<vizcraft.touch.MultitouchDevice \"" + device.name() + "\">"; })
-      .def_property_readonly("name", &MultitouchDevice::name)
-      .def_property_readonly("num_slots", &MultitouchDevice::num_slots)
-      .def_property_readonly("touch_points", &MultitouchDevice::touch_points)
-      .def("start", &MultitouchDevice::start)
-      .def("stop", &MultitouchDevice::stop)
-      .def("poll_events", [](MultitouchDevice& dev) {
-        TouchPtrSet new_touch_points, updated_touch_points, finished_touch_points;
-        dev.poll_events(new_touch_points, updated_touch_points, finished_touch_points);
-        return std::make_tuple(std::move(new_touch_points), std::move(updated_touch_points),
-                               std::move(finished_touch_points));
-      });
-}
-
-void init_touch_point(py::module& m) {
   py::class_<TouchPoint, std::shared_ptr<TouchPoint>>{m, "TouchPoint"}
       .def(py::init<int>(), py::arg("id"))
       .def("__repr__",
@@ -67,4 +49,20 @@ void init_touch_point(py::module& m) {
       .def_property_readonly("timestamps", &TouchPoint::timestamps)
       .def_property_readonly("x_positions", &TouchPoint::x_positions)
       .def_property_readonly("y_positions", &TouchPoint::y_positions);
+
+  py::class_<MultitouchDevice, std::shared_ptr<MultitouchDevice>>{m, "MultitouchDevice"}
+      .def(py::init<std::string>(), py::arg("path"))
+      .def("__repr__",
+           [](const MultitouchDevice& device) { return "<vizcraft.touch.MultitouchDevice \"" + device.name() + "\">"; })
+      .def_property_readonly("name", &MultitouchDevice::name)
+      .def_property_readonly("num_slots", &MultitouchDevice::num_slots)
+      .def_property_readonly("touch_points", &MultitouchDevice::touch_points)
+      .def("start", &MultitouchDevice::start)
+      .def("stop", &MultitouchDevice::stop)
+      .def("poll_events", [](MultitouchDevice& dev) {
+        TouchPtrSet new_touch_points, updated_touch_points, finished_touch_points;
+        dev.poll_events(new_touch_points, updated_touch_points, finished_touch_points);
+        return std::make_tuple(std::move(new_touch_points), std::move(updated_touch_points),
+                               std::move(finished_touch_points));
+      });
 }
