@@ -37,6 +37,7 @@ class MultitouchDevice {
   const std::string& name() const;
   int num_slots() const;
   std::set<std::shared_ptr<TouchPoint>> touch_points() const;
+  bool running() const;
 
   void start();
   void stop();

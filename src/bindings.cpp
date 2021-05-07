@@ -57,6 +57,7 @@ PYBIND11_MODULE(wand, m) {
       .def_property_readonly("name", &MultitouchDevice::name)
       .def_property_readonly("num_slots", &MultitouchDevice::num_slots)
       .def_property_readonly("touch_points", &MultitouchDevice::touch_points)
+      .def_property_readonly("running", &MultitouchDevice::running)
       .def("start", &MultitouchDevice::start)
       .def("stop", &MultitouchDevice::stop)
       .def("poll_events", [](MultitouchDevice& dev) {
