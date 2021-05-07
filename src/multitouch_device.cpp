@@ -58,6 +58,7 @@ std::set<std::shared_ptr<TouchPoint>> MultitouchDevice::touch_points() const {
 
 void MultitouchDevice::start() {
   std::thread thread(&MultitouchDevice::run, this);
+  _running = true;
   thread.detach();
 }
 
