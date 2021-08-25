@@ -18,8 +18,7 @@ PYBIND11_MODULE(wand, m) {
 
   py::class_<TouchPoint, std::shared_ptr<TouchPoint>>{m, "TouchPoint"}
       .def(py::init<int>(), py::arg("id"))
-      .def("__repr__",
-           [](const TouchPoint& touch) { return "<vizcraft.touch.TouchPoint " + std::to_string(touch.id()) + ">"; })
+      .def("__repr__", [](const TouchPoint& touch) { return "<wand.TouchPoint " + std::to_string(touch.id()) + ">"; })
       .def_property_readonly("id", &TouchPoint::id)
       .def_property_readonly("active", &TouchPoint::active)
       .def_property_readonly("start_time", &TouchPoint::start_time)
@@ -53,7 +52,7 @@ PYBIND11_MODULE(wand, m) {
   py::class_<MultitouchDevice, std::shared_ptr<MultitouchDevice>>{m, "MultitouchDevice"}
       .def(py::init<std::string>(), py::arg("path"))
       .def("__repr__",
-           [](const MultitouchDevice& device) { return "<vizcraft.touch.MultitouchDevice \"" + device.name() + "\">"; })
+           [](const MultitouchDevice& device) { return "<wand.MultitouchDevice \"" + device.name() + "\">"; })
       .def_property_readonly("name", &MultitouchDevice::name)
       .def_property_readonly("num_slots", &MultitouchDevice::num_slots)
       .def_property_readonly("touch_points", &MultitouchDevice::touch_points)
